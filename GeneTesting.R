@@ -40,8 +40,7 @@ totVals <- scfdCol * scfdRow
 
 # Evaluate synapses
 syn0 <- matrix(runif(totVals, -1.0, 1.0), scfdCol, scfdRow)
+syn1 <- matrix(runif(length(outArr), -1, 1.0), length(outArr), length(outArr[1]))
 
-# Dimensions don't work
-print(sigmoid(mat.fileData %*% syn0))
 
       
