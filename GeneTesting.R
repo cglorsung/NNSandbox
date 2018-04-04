@@ -10,10 +10,12 @@ fileData <- read.csv("Data/SampleGenes.csv", header=FALSE)
 
 scaled.fileData <- scale(fileData)
 
-print(scaled.fileData)
-
 # Figure out how to scale this properly and get it into a matrix
-scaled.fileData <- matrix(scaled.fileData, ncol=ncol(scaled.fileData), nrow=nrow(scaled.fileData))[1,]
+normal.fileData <- as.matrix(fileData / norm(as.matrix(fileData), type="F"))
+
+mat.fileData <- matrix(normal.fileData, nrow(normal.fileData), ncol(normal.fileData))
+
+print(normal.fileData[1,1])
 
 # Sigmoid function
 sigmoid <- function(x, derive=FALSE) {
@@ -32,14 +34,14 @@ if(supervise) {
 
 cat(sprintf("NCOL SC.FD: %s\nNROW SC.FD: %s", ncol(scaled.fileData), nrow(scaled.fileData)))
 
+scfdCol <- ncol(scaled.fileData)
+scfdRow <- nrow(scaled.fileData)
+totVals <- scfdCol * scfdRow
+
 # Evaluate synapses
-
-# Figure out how to get this synapse working properly
-syn0 <- matrix(2*runif(ncol(scaled.fileData)*nrow(scaled.fileData), 0, 1)-1, ncol=nrow(scaled.fileData), nrow=ncol(scaled.fileData))
-
-print(syn0[0,])
-
-cat(sprintf("NCOL SYN0: %s\nNROW SYN1: %s", ncol(syn0), nrow(syn0)))
+syn0 <- matrix(runif(totVals, -1.0, 1.0), scfdCol, scfdRow)
 
 # Dimensions don't work
-print(sigmoid(scaled.fileData%*%syn0))
+print(sigmoid(mat.fileData %*% syn0))
+
+      
